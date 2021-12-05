@@ -17,6 +17,7 @@ CENY = {
     "capricciosa": 22,
     "vegetariana": 23,
 }
+
 RODZAJE = [
     "marinara",
     "margherita",
@@ -28,7 +29,9 @@ RODZAJE = [
     "capricciosa",
     "vegetariana",
 ]
+
 CENY_LISTA = [10, 15, 17, 18, 20, 20, 21, 22, 23]
+
 SKLADNIKI = [
     "sos pomidorowy, ząbek czosnku, (bez sera mozarella)",
     "sos pomidorowy, mozarella, parmezan",
@@ -40,9 +43,10 @@ SKLADNIKI = [
     "sos pomidorowy, mozarella, szynka gotowana, pieczarki, czarne oliwki, parmezan",
     "sos pomidorowy, mozarella, czarne oliwki, pieczarki, kukurydza",
 ]
+
 MENU = pd.DataFrame({"Pizza": RODZAJE, "Składniki": SKLADNIKI, "Cena": CENY_LISTA})
 
-POWITANIE = "Dzień dobry witamy w pizzerii polsko-japońskiej"
+POWITANIE = "Dzień dobry, witamy w pizzerii polsko-japońskiej!"
 PIZZA = "Jaką pizzę sobie życzysz?"
 PYTANIE_O_ADRES = "Podaj proszę swój adres?"
 
@@ -63,6 +67,7 @@ def order():
         pytanie = record_voice()
         zatw = yes_no(pytanie)
         if zatw == False:
+            speaker("Przechodzę do finalizacji zamówienia.")
             break
 
     adres_mieszkania = asking(PYTANIE_O_ADRES, adres)
@@ -71,9 +76,9 @@ def order():
     print(CALE_ZAMOWIENIE.head(20))
     print(f"Adres dostawy to: {adres_mieszkania}")
     speaker(
-        f"Twoje zamówienie oraz adres jest widoczne na ekranie. Za całość zapłacisz {str(koszt)} złotych. Smacznego, życzymy miłego dnia "
+        f"Twoje zamówienie oraz adres jest widoczne na ekranie. Za całość zapłacisz {str(koszt)} złotych. Smacznego, życzymy miłego dnia!"
     )
-    time.sleep(30)
+    time.sleep(10)
 
 
 if __name__ == "__main__":
