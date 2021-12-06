@@ -1,12 +1,12 @@
-from pizze import pizza_order, adres
-from dzwieki import asking, record_voice, speaker, yes_no
+from pizzas import pizza_order, address
+from sounds import asking, record_voice, speaker, yes_no
 import warnings
 import pandas as pd
 import time
 
 warnings.filterwarnings(action="ignore")
 
-CENY = {
+prices = {
     "marinara": 10,
     "margherita": 15,
     "hawajska": 17,
@@ -18,7 +18,7 @@ CENY = {
     "vegetariana": 23,
 }
 
-RODZAJE = [
+pizza_list = [
     "marinara",
     "margherita",
     "hawajska",
@@ -30,9 +30,9 @@ RODZAJE = [
     "vegetariana",
 ]
 
-CENY_LISTA = [10, 15, 17, 18, 20, 20, 21, 22, 23]
+price_list = [10, 15, 17, 18, 20, 20, 21, 22, 23]
 
-SKLADNIKI = [
+ingredient_list = [
     "sos pomidorowy, ząbek czosnku, (bez sera mozarella)",
     "sos pomidorowy, mozarella, parmezan",
     "sos pomidorowy, mozarella, szynka gotowana, ananas, parmezan",
@@ -44,39 +44,40 @@ SKLADNIKI = [
     "sos pomidorowy, mozarella, czarne oliwki, pieczarki, kukurydza",
 ]
 
-MENU = pd.DataFrame({"Pizza": RODZAJE, "Składniki": SKLADNIKI, "Cena": CENY_LISTA})
-
-POWITANIE = "Dzień dobry, witamy w pizzerii polsko-japońskiej!"
-PIZZA = "Jaką pizzę sobie życzysz?"
-PYTANIE_O_ADRES = "Podaj proszę swój adres?"
+menu = pd.DataFrame({"Pizza": pizza_list, "Składniki": ingredient_list, "Cena": price_list})
 
 
 def order():
-    zamowienie = []
-    koszt = 0
-    koszty = []
-    print(MENU.head(20))
-    speaker(POWITANIE)
+    
+    order_list = []
+    cost = 0
+    costs = []
+    print(menu.head(20))
+    greeting = "Dzień dobry, witamy w pizzerii polsko-japońskiej!"
+    speaker(greeting)
 
     while True:
-        pizza = asking(PIZZA, pizza_order)
-        zamowienie.append(pizza)
-        koszty.append(CENY[pizza])
-        koszt += CENY[pizza]
+        pizza_question = "Jaką pizzę sobie życzysz?"
+        pizza = asking(pizza_question, pizza_order)
+        order_list.append(pizza)
+        costs.append(prices[pizza])
+        cost += prices[pizza]
         speaker("Czy chcesz zamówić coś jeszcze?")
-        pytanie = record_voice()
-        zatw = yes_no(pytanie)
-        if zatw == False:
+        confirmation = yes_no(record_voice())
+        if confirmation == True:
+            continue
+        else:
             speaker("Przechodzę do finalizacji zamówienia.")
             break
+    
+    address_question = "Podaj proszę swój adres?"
+    customer_address = asking(address_question, address)
 
-    adres_mieszkania = asking(PYTANIE_O_ADRES, adres)
-
-    CALE_ZAMOWIENIE = pd.DataFrame({"zamowienie": zamowienie, "cena": koszty})
-    print(CALE_ZAMOWIENIE.head(20))
-    print(f"Adres dostawy to: {adres_mieszkania}")
+    order_total = pd.DataFrame({"Zamowienie": order_list, "Cena": costs})
+    print(order_total.head(20))
+    print(f"Adres dostawy to: {customer_address}")
     speaker(
-        f"Twoje zamówienie oraz adres jest widoczne na ekranie. Za całość zapłacisz {str(koszt)} złotych. Smacznego, życzymy miłego dnia!"
+        f"Twoje zamówienie oraz adres jest widoczne na ekranie. Za całość zapłacisz {str(cost)} złotych. Smacznego, życzymy miłego dnia!"
     )
     time.sleep(10)
 
