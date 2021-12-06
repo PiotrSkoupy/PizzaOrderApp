@@ -44,21 +44,20 @@ ingredient_list = [
     "sos pomidorowy, mozarella, czarne oliwki, pieczarki, kukurydza",
 ]
 
-MENU = pd.DataFrame({"Pizza": pizza_list, "Składniki": ingredient_list, "Cena": price_list})
-
-greeting = "Dzień dobry, witamy w pizzerii polsko-japońskiej!"
-pizza_question = "Jaką pizzę sobie życzysz?"
-address_question = "Podaj proszę swój adres?"
+menu = pd.DataFrame({"Pizza": pizza_list, "Składniki": ingredient_list, "Cena": price_list})
 
 
 def order():
+    
     order_list = []
     cost = 0
     costs = []
-    print(MENU.head(20))
+    print(menu.head(20))
+    greeting = "Dzień dobry, witamy w pizzerii polsko-japońskiej!"
     speaker(greeting)
 
     while True:
+        pizza_question = "Jaką pizzę sobie życzysz?"
         pizza = asking(pizza_question, pizza_order)
         order_list.append(pizza)
         costs.append(prices[pizza])
@@ -70,7 +69,8 @@ def order():
         else:
             speaker("Przechodzę do finalizacji zamówienia.")
             break
-
+    
+    address_question = "Podaj proszę swój adres?"
     customer_address = asking(address_question, address)
 
     order_total = pd.DataFrame({"Zamowienie": order_list, "Cena": costs})
